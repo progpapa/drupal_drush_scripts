@@ -14,6 +14,14 @@
 # - configure basic system variables (caching, css aggregation, etc.)
 # - configure stage_file_proxy_module
 
+# Make sure there is a Drupal site to use.
+$alias = drush_sitealias_get_record('@self');
+if (empty($alias)) {
+  drush_set_error('AFTER_SYNC_NO_DRUPAL',
+    dt('You are not in a Drupal root directory.'));
+  die;
+}
+
 # unset liveurl if it was specified, it interferes with drush_shell_exec()
 if ($liveurl = drush_get_option('liveurl')) {
   drush_unset_option('liveurl');
